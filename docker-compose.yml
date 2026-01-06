@@ -8,11 +8,14 @@ services:
       - "8015:8000"
     environment:
       # Set your API key here
-      - API_KEY=Sn4epjIKFalX6Z2qwtJlBbluJblcUNlXN4Kq6HFuWnQ
+      - API_KEY=your-super-secret-api-key-change-this
       # Maximum file size per chunk in MB
       - MAX_FILE_SIZE_MB=25
       # Video quality (worst = smallest size, best for AI analysis)
+      # Video quality (worst = smallest size, best for AI analysis)
       - VIDEO_QUALITY=worst
+    volumes:
+      - ./cookies.txt:/app/cookies.txt
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]

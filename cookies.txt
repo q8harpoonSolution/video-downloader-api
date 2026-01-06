@@ -1,0 +1,6 @@
+# Netscape HTTP Cookie File
+# This is a placeholder. If you face "Sign in to confirm you're not a bot" errors:
+# 1. Install "Get cookies.txt LOCALLY" extension in Chrome/Firefox
+# 2. Go to youtube.com and log in
+# 3. Export cookies and replace content of this file
+# 4. Restart the container

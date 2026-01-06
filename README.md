@@ -145,6 +145,23 @@ This API is purpose-built for n8n. Here is the perfect workflow pattern:
 
 ---
 
+## 🔧 Troubleshooting YouTube
+
+If you see **"Sign in to confirm you're not a bot"** errors:
+
+1.  **Install Extension**: Get "Get cookies.txt LOCALLY" for [Chrome](https://chrome.google.com/webstore/detail/get-cookiestxt-locally/cclelndahbckbenkjhflccgomxhgecid) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/get-cookies-txt-locally/).
+2.  **Export Cookies**:
+    -   Go to [youtube.com](https://youtube.com) and sign in.
+    -   Use the extension to export cookies as `cookies.txt`.
+3.  **Place File**: Save the file as `cookies.txt` in your project folder (next to `docker-compose.yml`).
+4.  **Restart**:
+    ```bash
+    docker-compose down
+    docker-compose up -d
+    ```
+
+---
+
 ## ⚙️ Configuration
 
 Manage settings via environment variables in `docker-compose.yml`:

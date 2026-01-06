@@ -37,6 +37,14 @@ class VideoDownloader:
                 'quiet': True,
                 'no_warnings': True,
                 'extract_flat': False,
+                'nocheckcertificate': True,
+                # Anti-bot measures: Use mobile clients which are less strictly rate-limited
+                'extractor_args': {
+                    'youtube': {
+                        'player_client': ['android', 'ios'],
+                        'player_skip': ['webpage', 'configs', 'js'], 
+                    },
+                },
                 'postprocessors': [{
                     'key': 'FFmpegVideoConvertor',
                     'preferedformat': 'mp4',
@@ -50,6 +58,10 @@ class VideoDownloader:
                     '-b:a', '64k',  # Lower audio bitrate
                 ],
             }
+            
+            # Use cookies if available (mount cookies.txt to /app/cookies.txt)
+            if Path("cookies.txt").exists():
+                ydl_opts['cookiefile'] = "cookies.txt"
             
             # Download video and extract info
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
