@@ -51,6 +51,11 @@ class VideoDownloader:
                 ],
             }
 
+            # Apply proxy if configured
+            if settings.proxy_url:
+                print(f"DEBUG: Using proxy: {settings.proxy_url}")
+                ydl_opts['proxy'] = settings.proxy_url
+
             # Check for cookies file
             cookies_file = Path("cookies.txt")
             if cookies_file.exists():

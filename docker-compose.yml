@@ -14,6 +14,8 @@ services:
       # Video quality (worst = smallest size, best for AI analysis)
       # Video quality (worst = smallest size, best for AI analysis)
       - VIDEO_QUALITY=worst
+      # Optional: Proxy URL for bypassing IP blocks (e.g., http://user:pass@host:port)
+      - PROXY_URL=
     volumes:
       - ./cookies.txt:/app/cookies.txt
     restart: unless-stopped
