@@ -38,14 +38,6 @@ class VideoDownloader:
                 'no_warnings': True,
                 'extract_flat': False,
                 'nocheckcertificate': True,
-                # Use generic user agent to avoid bot fingerprinting
-                'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                # Fallback to Android client if web client fails
-                'extractor_args': {
-                    'youtube': {
-                        'player_client': ['android', 'web'],
-                    },
-                },
                 'postprocessors': [{
                     'key': 'FFmpegVideoConvertor',
                     'preferedformat': 'mp4',
@@ -64,8 +56,21 @@ class VideoDownloader:
             if cookies_file.exists():
                 print(f"DEBUG: Found cookies.txt, using it.")
                 ydl_opts['cookiefile'] = "cookies.txt"
+                # Force WEB client when using standard browser cookies to avoid mismatch
+                ydl_opts['extractor_args'] = {
+                    'youtube': {
+                        'player_client': ['web'],
+                    },
+                }
             else:
-                print(f"DEBUG: No cookies.txt found. Trying without auth.")
+                print(f"DEBUG: No cookies.txt found. Trying 'android' client spoofing.")
+                # Anti-bot measures: Use generic Desktop UA + Android client
+                ydl_opts['user_agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                ydl_opts['extractor_args'] = {
+                    'youtube': {
+                        'player_client': ['android', 'web'],
+                    },
+                }
             
             # Download video and extract info
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
