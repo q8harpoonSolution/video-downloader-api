@@ -30,11 +30,6 @@ class VideoDownloader:
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = Path(temp_dir) / "video.%(ext)s"
             
-            # Check for cookies file
-            cookies_file = Path("cookies.txt")
-            has_cookies = cookies_file.exists()
-            print(f"DEBUG: Cookies file found: {has_cookies}")
-
             # Configure yt-dlp options
             ydl_opts = {
                 'format': 'worst[ext=mp4]/worst',
@@ -43,6 +38,14 @@ class VideoDownloader:
                 'no_warnings': True,
                 'extract_flat': False,
                 'nocheckcertificate': True,
+                # Use generic user agent to avoid bot fingerprinting
+                'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                # Fallback to Android client if web client fails
+                'extractor_args': {
+                    'youtube': {
+                        'player_client': ['android', 'web'],
+                    },
+                },
                 'postprocessors': [{
                     'key': 'FFmpegVideoConvertor',
                     'preferedformat': 'mp4',
@@ -56,19 +59,13 @@ class VideoDownloader:
                 ],
             }
 
-            if has_cookies:
-                print("DEBUG: Using cookies.txt for authentication")
+            # Check for cookies file
+            cookies_file = Path("cookies.txt")
+            if cookies_file.exists():
+                print(f"DEBUG: Found cookies.txt, using it.")
                 ydl_opts['cookiefile'] = "cookies.txt"
-                # When using browser cookies, DO NOT spoof mobile clients as it causes mismatch errors
             else:
-                print("DEBUG: No cookies found, using mobile client spoofing")
-                # Anti-bot measures: Use mobile clients only when no cookies are provided
-                ydl_opts['extractor_args'] = {
-                    'youtube': {
-                        'player_client': ['android', 'ios'],
-                        'player_skip': ['webpage', 'configs', 'js'], 
-                    },
-                }
+                print(f"DEBUG: No cookies.txt found. Trying without auth.")
             
             # Download video and extract info
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
