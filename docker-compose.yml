@@ -16,6 +16,8 @@ services:
       - VIDEO_QUALITY=worst
       # Optional: Proxy URL for bypassing IP blocks (e.g., http://user:pass@host:port)
       - PROXY_URL=
+      # Optional: YouTube PO Token (Highly recommended for 2025 bot detection)
+      - PO_TOKEN=
     volumes:
       - ./cookies.txt:/app/cookies.txt
     restart: unless-stopped

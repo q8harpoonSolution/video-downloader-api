@@ -145,20 +145,30 @@ This API is purpose-built for n8n. Here is the perfect workflow pattern:
 
 ---
 
-## 🔧 Troubleshooting YouTube
+### 1. Proof of Origin (PO) Token (Recommended for 2025)
 
-If you see **"Sign in to confirm you're not a bot"** errors:
+YouTube now requires a "Security Token" (PO Token) for some server environments.
 
-1.  **Install Extension**: Get "Get cookies.txt LOCALLY" for [Chrome](https://chrome.google.com/webstore/detail/get-cookiestxt-locally/cclelndahbckbenkjhflccgomxhgecid) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/get-cookies-txt-locally/).
-2.  **Export Cookies**:
-    -   Go to [youtube.com](https://youtube.com) and sign in.
-    -   Use the extension to export cookies as `cookies.txt`.
-3.  **Place File**: Save the file as `cookies.txt` in your project folder (next to `docker-compose.yml`).
-4.  **Restart**:
+1.  **Extract Token**:
+    -   Go to [YouTube](https://youtube.com) in your browser (Chrome/Edge/Firefox).
+    -   Press `F12` to open **Developer Tools** -> **Network** tab.
+    -   Search for `v1/player`.
+    -   Play any video.
+    -   Find a request that looks like `v1/player?key=...`.
+    -   In the **Payload** (or Request JSON), look for `serviceIntegrityDimensions` -> `poToken`.
+    -   Copy that long string.
+2.  **Edit `docker-compose.yml`**:
+    ```yaml
+    - PO_TOKEN=paste_your_token_here
+    ```
+3.  **Restart**:
     ```bash
     docker-compose down
-    docker-compose up -d
+    docker-compose up -d --build
     ```
+
+### 2. Export Cookies
+...
 
 ---
 

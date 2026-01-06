@@ -56,26 +56,29 @@ class VideoDownloader:
                 print(f"DEBUG: Using proxy: {settings.proxy_url}")
                 ydl_opts['proxy'] = settings.proxy_url
 
-            # Check for cookies file
+            # Check for cookies/tokens
             cookies_file = Path("cookies.txt")
+            
+            # YouTube Extractor Args (2025 Bot Bypass)
+            # Reference: https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp
+            yt_extractor_args = {
+                'player_client': ['web', 'android'],
+                'player_skip': ['webpage', 'configs', 'js'],
+            }
+            
+            if settings.po_token:
+                print(f"DEBUG: Using PO Token for YouTube")
+                yt_extractor_args['po_token'] = [f"web+{settings.po_token}"]
+
             if cookies_file.exists():
                 print(f"DEBUG: Found cookies.txt, using it.")
                 ydl_opts['cookiefile'] = "cookies.txt"
-                # Force WEB client when using standard browser cookies to avoid mismatch
-                ydl_opts['extractor_args'] = {
-                    'youtube': {
-                        'player_client': ['web'],
-                    },
-                }
+                # If cookies exist, prioritize web client to match browser session
+                yt_extractor_args['player_client'] = ['web']
             else:
-                print(f"DEBUG: No cookies.txt found. Trying 'android' client spoofing.")
-                # Anti-bot measures: Use generic Desktop UA + Android client
-                ydl_opts['user_agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-                ydl_opts['extractor_args'] = {
-                    'youtube': {
-                        'player_client': ['android', 'web'],
-                    },
-                }
+                print(f"DEBUG: No cookies.txt found. Using Android fallback.")
+
+            ydl_opts['extractor_args'] = {'youtube': yt_extractor_args}
             
             # Download video and extract info
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
