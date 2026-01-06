@@ -52,3 +52,4 @@ Thumbs.db
 
 # Docker
 # (dockerignore is needed for builds)
+cookies.txt
