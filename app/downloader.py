@@ -70,6 +70,12 @@ class VideoDownloader:
                 print(f"DEBUG: Using PO Token for YouTube")
                 yt_extractor_args['po_token'] = [f"web+{settings.po_token}"]
 
+            # Clean up potential directory error (self-healing)
+            if cookies_file.exists() and cookies_file.is_dir():
+                print(f"DEBUG: Found cookies.txt as a DIRECTORY (bad state). Deleting it.")
+                import shutil
+                shutil.rmtree(cookies_file)
+
             if cookies_file.exists():
                 print(f"DEBUG: Found cookies.txt, using it.")
                 ydl_opts['cookiefile'] = "cookies.txt"
