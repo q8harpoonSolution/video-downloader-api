@@ -70,13 +70,7 @@ class VideoDownloader:
                 print(f"DEBUG: Using PO Token for YouTube")
                 yt_extractor_args['po_token'] = [f"web+{settings.po_token}"]
 
-            # PRIORITIZE OAUTH2: If enabled, ignore cookies to force interactive login
-            if settings.enable_oauth2:
-                print(f"DEBUG: OAuth2 Enabled. Ignoring cookies.txt to force interactive login.")
-                # Trigger interactive OAuth2 flow
-                ydl_opts['username'] = 'oauth2'
-                ydl_opts['password'] = ''
-            elif cookies_file.exists():
+            if cookies_file.exists():
                 print(f"DEBUG: Found cookies.txt, using it.")
                 ydl_opts['cookiefile'] = "cookies.txt"
                 # If cookies exist, prioritize web client to match browser session
