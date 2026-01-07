@@ -23,9 +23,6 @@ services:
     volumes:
       - ./cookies.txt:/app/cookies.txt
       - yt_dlp_cache:/root/.cache/yt-dlp
-
-volumes:
-  yt_dlp_cache:
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
@@ -33,3 +30,6 @@ volumes:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+volumes:
+  yt_dlp_cache:
