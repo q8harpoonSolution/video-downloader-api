@@ -18,7 +18,6 @@ services:
       # Optional: YouTube PO Token (Highly recommended for 2025 bot detection)
       - PO_TOKEN=${PO_TOKEN}
     volumes:
-      - ./cookies.txt:/app/cookies.txt
       - yt_dlp_cache:/root/.cache/yt-dlp
     restart: unless-stopped
     healthcheck:
