@@ -18,8 +18,14 @@ services:
       - PROXY_URL=
       # Optional: YouTube PO Token (Highly recommended for 2025 bot detection)
       - PO_TOKEN=
+      # Enable OAuth2 Login (Set to True to authenticate via device code)
+      - ENABLE_OAUTH2=True
     volumes:
       - ./cookies.txt:/app/cookies.txt
+      - yt_dlp_cache:/root/.cache/yt-dlp
+
+volumes:
+  yt_dlp_cache:
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]

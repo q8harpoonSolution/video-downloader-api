@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     video_quality: str = "worst"  # Optimized for AI analysis
     proxy_url: str | None = None  # Optional proxy URL
     po_token: str | None = None  # YouTube Proof of Origin token
+    enable_oauth2: bool = False  # Enable YouTube OAuth2 interactive login
     
     class Config:
         env_file = ".env"

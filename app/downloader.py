@@ -75,6 +75,11 @@ class VideoDownloader:
                 ydl_opts['cookiefile'] = "cookies.txt"
                 # If cookies exist, prioritize web client to match browser session
                 yt_extractor_args['player_client'] = ['web']
+            elif settings.enable_oauth2:
+                print(f"DEBUG: OAuth2 Enabled. Check logs for Device Code if not authenticated.")
+                # Trigger interactive OAuth2 flow
+                ydl_opts['username'] = 'oauth2'
+                ydl_opts['password'] = ''
             else:
                 print(f"DEBUG: No cookies.txt found. Using Android fallback.")
 
