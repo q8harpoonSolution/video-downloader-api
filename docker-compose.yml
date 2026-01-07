@@ -8,18 +8,17 @@ services:
       - "8015:8000"
     environment:
       # Set your API key here
-      - API_KEY=your-super-secret-api-key-change-this
+      - API_KEY=${API_KEY}
       # Maximum file size per chunk in MB
-      - MAX_FILE_SIZE_MB=25
+      - MAX_FILE_SIZE_MB=${MAX_FILE_SIZE_MB:-25}
       # Video quality (worst = smallest size, best for AI analysis)
-      # Video quality (worst = smallest size, best for AI analysis)
-      - VIDEO_QUALITY=worst
+      - VIDEO_QUALITY=${VIDEO_QUALITY:-worst}
       # Optional: Proxy URL for bypassing IP blocks (e.g., http://user:pass@host:port)
-      - PROXY_URL=
+      - PROXY_URL=${PROXY_URL}
       # Optional: YouTube PO Token (Highly recommended for 2025 bot detection)
-      - PO_TOKEN=
+      - PO_TOKEN=${PO_TOKEN}
       # Enable OAuth2 Login (Set to True to authenticate via device code)
-      - ENABLE_OAUTH2=True
+      - ENABLE_OAUTH2=${ENABLE_OAUTH2:-True}
     volumes:
       - ./cookies.txt:/app/cookies.txt
       - yt_dlp_cache:/root/.cache/yt-dlp
